@@ -118,14 +118,25 @@ public class BoardController {
 	public String removeBoard(Model model,
 								@RequestParam(name = "boardNo", required = false) int boardNo) {
 		// 세션 아이디에 따른 분기... 추가예정
-		return "";
+		
+		model.addAttribute("boardNo", boardNo);
+		
+		return "/board/removeBoard";
 		
 	}
 	
 	// 게시글 삭제 액션
 	@PostMapping("/board/removeBoard")
-	public String removeBoard() {
-		return "";
+	public String removeBoard(Board board) { // Board 객체의 필드 이름에 자동으로 매핑된다
+		// memberId 처리
+		String memberId = "test";
+		board.setMemberId(memberId);
+		
+		int row = boardService.removeBoard(board);
+		System.out.println("removeBoard row: " + row);
+		log.debug("\u001B[31m"+"removeBoard row : "+row+"\u001B[0m"); // 콘솔창 출력 색상 지정
+		
+		return "redirect:/board/boardList";
 	}
 	
 }

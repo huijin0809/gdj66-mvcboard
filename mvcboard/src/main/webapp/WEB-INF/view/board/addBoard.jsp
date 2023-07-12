@@ -15,7 +15,9 @@
 				<td>
 					<select name="localName">
 						<c:forEach var="m" items="${localNameList}">
-							<option value="${m.localName}">${m.localName}</option>
+							<c:if test="${m.localName != '전체'}">
+								<option value="${m.localName}">${m.localName}</option>
+							</c:if>
 						</c:forEach>
 					</select>
 				</td>
@@ -29,6 +31,7 @@
 				<td><textarea rows="5" cols="40" name="boardContent"></textarea></td>
 			</tr>
 		</table>
+		<a href="/board/boardList">목록으로</a>
 		<button type="submit">작성</button>
 	</form>
 </body>

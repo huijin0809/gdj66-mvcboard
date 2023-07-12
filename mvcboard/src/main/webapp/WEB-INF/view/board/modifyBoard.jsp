@@ -20,7 +20,9 @@
 				<td>
 					<select name="localName">
 						<c:forEach var="m" items="${localNameList}">
-							<option value="${m.localName}">${m.localName}</option>
+							<c:if test="${m.localName != '전체'}">
+								<option value="${m.localName}">${m.localName}</option>
+							</c:if>
 						</c:forEach>
 					</select>
 				</td>
