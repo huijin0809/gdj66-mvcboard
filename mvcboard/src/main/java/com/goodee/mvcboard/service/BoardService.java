@@ -61,9 +61,18 @@ public class BoardService {
  		return resultMap;
 	}
 	
-	// 게시글 상세보기
-	public Board selectBoardOne(int boardNo) { 
-		return boardMapper.selectBoardOne(boardNo);
+	// 게시글 상세보기 // + 파일 첨부시 같이 조회
+	public Map<String, Object> selectBoardOne(int boardNo) {
+		// 게시글 조회
+		Board board = boardMapper.selectBoardOne(boardNo);
+		// 파일 정보 조회
+		List<Boardfile> boardfileList = boardfileMapper.selectBoardfileOne(boardNo);
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("board", board);
+		resultMap.put("boardfileList", boardfileList);
+		
+		return resultMap;
 	}
 	
 	// 게시글 작성
@@ -79,34 +88,36 @@ public class BoardService {
 			// 파일 업로드 작업 시작
 			// 첨부한 파일의 갯수에 따라.. 1번 진행 or 여러번 진행 (반복)
 			for(MultipartFile mf : fileList) {
-				Boardfile bf = new Boardfile(); // Boardfile vo에 값 셋팅
-				bf.setBoardNo(boardNo); // 가져온 부모키 값
-				bf.setOriginFilename(mf.getOriginalFilename()); // 파일 원본이름
-				bf.setFilesize(mf.getSize()); // 파일 크기
-				bf.setFiletype(mf.getContentType()); // 파일 타입
-				// 저장할 파일 이름 구하기 (+ 확장자명을 포함)
-				// 1) 파일의 확장자
-				// lastIndexOf() 메서드를 이용하여 "."을 기준으로 확장자명을 잘라낸다
-				String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-				// 2) 파일의 이름
-				// 중복되지 않는 유일한 식별자를 랜덤으로 생성하기 위해 UUID 클래스의 randomUUID() 메서드 사용
-				// UUID로 식별자 생성시 중간에 "-"가 들어가기 때문에 replace() 메서드를 이용하여 없애준다
-				String newFilename = UUID.randomUUID().toString().replace("-", "") + ext;
-				bf.setSaveFilename(newFilename);
-				
-				// 최종적으로 (1) 데이터 테이블에 저장
-				boardfileMapper.insertBoardfile(bf);
-				
-				// 최종적으로 (2) 실제 폴더에 데이터 저장 (저장위치인 path 필요)
-				File f = new File(path + bf.getSaveFilename()); // path에 저장된 파일 이름으로 빈 파일을 생성
-				// transferTo() 메서드를 이용하여 생성한 빈 파일에 첨부된 파일의 스트림을 주입한다
-				try {
-					mf.transferTo(f);
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
+				if(mf.getSize() > 0) {
+					Boardfile bf = new Boardfile(); // Boardfile vo에 값 셋팅
+					bf.setBoardNo(boardNo); // 가져온 부모키 값
+					bf.setOriginFilename(mf.getOriginalFilename()); // 파일 원본이름
+					bf.setFilesize(mf.getSize()); // 파일 크기
+					bf.setFiletype(mf.getContentType()); // 파일 타입
+					// 저장할 파일 이름 구하기 (+ 확장자명을 포함)
+					// 1) 파일의 확장자
+					// lastIndexOf() 메서드를 이용하여 "."을 기준으로 확장자명을 잘라낸다
+					String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
+					// 2) 파일의 이름
+					// 중복되지 않는 유일한 식별자를 랜덤으로 생성하기 위해 UUID 클래스의 randomUUID() 메서드 사용
+					// UUID로 식별자 생성시 중간에 "-"가 들어가기 때문에 replace() 메서드를 이용하여 없애준다
+					String newFilename = UUID.randomUUID().toString().replace("-", "") + ext;
+					bf.setSaveFilename(newFilename);
 					
-					// 트랜잭션이 정상적으로 작동할 수 있도록 try..catch를 강요하지 않는 예외 발생이 필요하다
-					throw new RuntimeException();
+					// 최종적으로 (1) 데이터 테이블에 저장
+					boardfileMapper.insertBoardfile(bf);
+					
+					// 최종적으로 (2) 실제 폴더에 데이터 저장 (저장위치인 path 필요)
+					File f = new File(path + bf.getSaveFilename()); // path에 저장된 파일 이름으로 빈 파일을 생성
+					// transferTo() 메서드를 이용하여 생성한 빈 파일에 첨부된 파일의 스트림을 주입한다
+					try {
+						mf.transferTo(f);
+					} catch (IllegalStateException | IOException e) {
+						e.printStackTrace();
+						
+						// 트랜잭션이 정상적으로 작동할 수 있도록 try..catch를 강요하지 않는 예외 발생이 필요하다
+						throw new RuntimeException();
+					}
 				}
 			}
 		}

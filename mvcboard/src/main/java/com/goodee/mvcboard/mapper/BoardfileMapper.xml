@@ -16,4 +16,16 @@
 			#{filesize}
 		)
 	</insert>
+	
+	<select id="selectBoardfileOne" parameterType="int" resultType="com.goodee.mvcboard.vo.Boardfile">
+		SELECT
+			boardfile_no boardFileNo,
+			board_no boardNo,
+			origin_filename originFilename,
+			save_filename saveFilename,
+			filetype,
+			filesize
+		FROM boardfile
+		WHERE board_no = #{boardNo}
+	</select>
 </mapper>

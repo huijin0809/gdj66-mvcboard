@@ -79,12 +79,13 @@ public class BoardController {
 		return "redirect:/board/boardList";
 	}
 	
-	// 게시글 상세보기
+	// 게시글 상세보기 // + 파일 정보 조회
 	@GetMapping("/board/boardOne")
 	public String boardOne(Model model,
 							@RequestParam(name = "boardNo", required = false) int boardNo) {
-		Board board = boardService.selectBoardOne(boardNo);
-		model.addAttribute("board", board);
+		Map<String, Object> resultMap = boardService.selectBoardOne(boardNo);
+		model.addAttribute("board", resultMap.get("board"));
+		model.addAttribute("boardfileList", resultMap.get("boardfileList"));
 		
 		return "/board/boardOne";
 	}
@@ -97,12 +98,13 @@ public class BoardController {
 								@RequestParam(name = "rowPerPage", defaultValue = "10") int rowPerPage,
 								@RequestParam(name = "localName", required = false) String localName) {
 		// 수정 전 정보 조회
-		Board board = boardService.selectBoardOne(boardNo);
-		model.addAttribute("board", board);
+		Map<String, Object> boardMap = boardService.selectBoardOne(boardNo);
+		model.addAttribute("board", boardMap.get("board"));
+		model.addAttribute("boardfileList", boardMap.get("boardfileList"));
 		
 		// 카테고리 목록 조회 // 만을 위해서 매개값 두개나 받아오는거 킹받는다...
-		Map<String, Object> resultMap = boardService.getBoardList(currentPage, rowPerPage, localName);
-		model.addAttribute("localNameList", resultMap.get("localNameList"));
+		Map<String, Object> localNameMap = boardService.getBoardList(currentPage, rowPerPage, localName);
+		model.addAttribute("localNameList", localNameMap.get("localNameList"));
 				
 		return "/board/modifyBoard";
 	}

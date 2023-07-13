@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +36,21 @@
 		<tr>
 			<th>updatedate</th>
 			<td>${board.updatedate}</td>
+		</tr>
+		<tr>
+			<th>boardFile</th>
+			<td>
+				<c:if test="${boardfileList.size() != 0}"> <!-- 파일을 등록했을 경우 -->
+					<c:forEach var="bf" items="${boardfileList}">
+						<a href="/upload/${bf.saveFilename}" download="${bf.saveFilename}"> <!-- 이름 클릭시 다운로드 -->
+							${bf.originFilename}<br>
+						</a>
+					</c:forEach>
+				</c:if>
+				<c:if test="${boardfileList.size() == 0}"> <!-- 등록한 파일이 없을 경우 -->
+					첨부된 파일이 없습니다
+				</c:if>
+			</td>
 		</tr>
 	</table>
 	<a href="/board/boardList">목록으로</a>
