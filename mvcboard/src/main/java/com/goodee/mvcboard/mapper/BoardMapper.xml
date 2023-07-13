@@ -58,6 +58,12 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="com.goodee.mvcboard.vo.Board">
+		<selectKey order="AFTER" keyProperty="boardNo" resultType="int">
+		<!-- order : AFTER로 설정하면, insert 구문을 실행한 뒤 키 값을 조회 -->
+		<!-- keyProperty : selectKey 구문의 결과가 셋팅될 대상 프로퍼티 -->
+		<!-- resultType : 조회될 키의 타입 -->
+			SELECT last_insert_id()
+		</selectKey>
 		INSERT INTO board(
 			local_name,
 			board_title,

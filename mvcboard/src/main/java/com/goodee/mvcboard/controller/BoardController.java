@@ -2,6 +2,8 @@ package com.goodee.mvcboard.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,13 +61,19 @@ public class BoardController {
 	
 	// 게시글 작성 액션
 	@PostMapping("/board/addBoard")
-	public String addBoard(Board board) { // Board 객체의 필드 이름에 자동으로 매핑된다
+	public String addBoard(HttpServletRequest request, Board board) {
+		// request api를 직접호출 하여 path값을 구하기 위해 매개값으로 request 객체를 받는다
+		// board의 입력폼 값은 Board 객체의 필드 이름에 자동으로 매핑된다
+		// Boardfile에 대한 입력값은 Board vo에 Map으로 추가했기 때문에, 마찬가지로 자동으로 매핑된다 (매개값을 따로 추가할 필요는 없다!) 
+		
 		// memberId 처리
 		String memberId = "test";
 		board.setMemberId(memberId);
 		
-		int row = boardService.addBoard(board);
-		System.out.println("addBoard row: " + row);
+		String path = request.getServletContext().getRealPath("/upload/");
+		log.debug("\u001B[31m" + "addBoard path : " + path + "\u001B[0m");
+		
+		int row = boardService.addBoard(board, path);
 		log.debug("\u001B[31m" + "addBoard row : " + row + "\u001B[0m"); // 콘솔창 출력 색상 지정
 		
 		return "redirect:/board/boardList";
@@ -107,7 +115,6 @@ public class BoardController {
 		board.setMemberId(memberId);
 		
 		int row = boardService.modifyBoard(board);
-		System.out.println("modifyBoard row: " + row);
 		log.debug("\u001B[31m"+"modifyBoard row : "+row+"\u001B[0m"); // 콘솔창 출력 색상 지정
 		
 		return "redirect:/board/boardOne?boardNo=" + board.getBoardNo();
@@ -133,7 +140,6 @@ public class BoardController {
 		board.setMemberId(memberId);
 		
 		int row = boardService.removeBoard(board);
-		System.out.println("removeBoard row: " + row);
 		log.debug("\u001B[31m"+"removeBoard row : "+row+"\u001B[0m"); // 콘솔창 출력 색상 지정
 		
 		return "redirect:/board/boardList";
