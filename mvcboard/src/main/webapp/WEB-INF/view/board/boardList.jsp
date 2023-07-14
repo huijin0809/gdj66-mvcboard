@@ -9,6 +9,9 @@
 <body>
 	<h1>게시판</h1>
 	<div>
+		<a href="/board/boardList">			
+			전체보기
+		</a>
 		<c:forEach var="m" items="${localNameList}">
 			<a href="/board/boardList?localName=${m.localName}">			
 				${m.localName}(${m.cnt})
