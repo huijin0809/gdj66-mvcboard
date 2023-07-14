@@ -134,4 +134,12 @@ public class BoardService {
 	public int modifyBoard(Board board) {
 		return boardMapper.updateBoard(board);
 	}
+	
+	// REST API chart 호출
+	// REST(Representational State Transfer) API란, URI와 HTTP Method를 이용하여 외부에서 만들어둔 기능들을 제어하는 것
+	// HTTP Method -> GET(데이터 조회, SELECT), POST(데이터 생성, INSERT), DELETE(데이터 삭제), PUT(데이터 수정, UPDATE)
+	// 원래는 서버에서 처리된 데이터를 view에 담아 클라이언트에게 응답했지만, REST API구조에서는 데이터(Model)만 응답하면 된다
+	public List<Map<String, Object>> getLocalNameList() {
+		return boardMapper.selectLocalNameList();
+	}
 }
