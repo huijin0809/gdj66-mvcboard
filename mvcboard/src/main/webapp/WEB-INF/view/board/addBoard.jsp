@@ -5,6 +5,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<!-- JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			
+			// 파일 선택 태그 추가
+			$('#addBtn').click(function() {
+				let fileInputRow = '<div><input type="file" name="multipartFile"></div>';
+				$('input[type="file"]').last().after(fileInputRow);
+			});
+			
+		});
+	</script>
 </head>
 <body>
 	<h1>게시글 작성하기</h1>
@@ -31,11 +44,12 @@
 			<tr>
 				<th>boardFile</th>
 				<td>
-					<input type="file" name="multipartFile" multiple>
+					<div><input type="file" name="multipartFile"></div>
 				</td>
 			</tr>
 		</table>
 		<a href="/board/boardList">목록으로</a>
+		<button type="button" id="addBtn">파일 선택 추가</button>
 		<button type="submit">작성</button>
 	</form>
 </body>

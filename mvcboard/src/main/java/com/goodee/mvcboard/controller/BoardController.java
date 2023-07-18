@@ -1,5 +1,6 @@
 package com.goodee.mvcboard.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,15 +47,12 @@ public class BoardController {
 	
 	// 게시글 작성 폼
 	@GetMapping("/board/addBoard")
-	public String addBoard(Model model, // 대신 ModelAndView 사용하기? 고민..
-							@RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
-							@RequestParam(name = "rowPerPage", defaultValue = "10") int rowPerPage,
-							@RequestParam(name = "localName", required = false) String localName) {
+	public String addBoard(Model model) { // 대신 ModelAndView 사용하기? 고민..
 		// 아직 세션 기능 구현 전이므로.... // 로그인 유무에 따라 분기 필요
 		
-		// 카테고리 목록 조회 // 만을 위해서 매개값 두개나 받아오는거 킹받는다...
-		Map<String, Object> resultMap = boardService.getBoardList(currentPage, rowPerPage, localName);
-		model.addAttribute("localNameList", resultMap.get("localNameList"));
+		// 카테고리 목록 조회
+		List<Map<String, Object>> localNameList = boardService.getLocalNameList();
+		model.addAttribute("localNameList", localNameList);
 		
 		return "/board/addBoard";
 	}
@@ -93,18 +91,15 @@ public class BoardController {
 	// 게시글 수정 폼
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Model model,
-								@RequestParam(name = "boardNo", required = false) int boardNo,
-								@RequestParam(name = "currentPage", defaultValue = "1") int currentPage,
-								@RequestParam(name = "rowPerPage", defaultValue = "10") int rowPerPage,
-								@RequestParam(name = "localName", required = false) String localName) {
+								@RequestParam(name = "boardNo", required = false) int boardNo) {
 		// 수정 전 정보 조회
 		Map<String, Object> boardMap = boardService.selectBoardOne(boardNo);
 		model.addAttribute("board", boardMap.get("board"));
 		model.addAttribute("boardfileList", boardMap.get("boardfileList"));
 		
-		// 카테고리 목록 조회 // 만을 위해서 매개값 두개나 받아오는거 킹받는다...
-		Map<String, Object> localNameMap = boardService.getBoardList(currentPage, rowPerPage, localName);
-		model.addAttribute("localNameList", localNameMap.get("localNameList"));
+		// 카테고리 목록 조회
+		List<Map<String, Object>> localNameList = boardService.getLocalNameList();
+		model.addAttribute("localNameList", localNameList);
 				
 		return "/board/modifyBoard";
 	}

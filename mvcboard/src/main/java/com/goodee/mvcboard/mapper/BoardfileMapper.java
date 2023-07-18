@@ -11,4 +11,8 @@ public interface BoardfileMapper {
 	int insertBoardfile(Boardfile boardFile);
 	
 	List<Boardfile> selectBoardfileOne(int boardNo);
+	
+	String selectBoardfileName(int boardfileNo);
+	
+	int deleteBoardfile(int boardfileNo);
 }

@@ -28,4 +28,16 @@
 		FROM boardfile
 		WHERE board_no = #{boardNo}
 	</select>
+	
+	<select id="selectBoardfileName" parameterType="int" resultType="java.lang.String">
+		SELECT
+			save_filename saveFilename
+		FROM boardfile
+		WHERE boardfile_no = #{boardfileNo}
+	</select>
+	
+	<delete id="deleteBoardfile" parameterType="int" >
+		DELETE FROM boardfile
+		WHERE boardfile_no = #{boardfileNo}
+	</delete>
 </mapper>

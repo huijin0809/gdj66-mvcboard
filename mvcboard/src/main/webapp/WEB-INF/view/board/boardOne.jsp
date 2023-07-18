@@ -42,9 +42,15 @@
 			<td>
 				<c:if test="${boardfileList.size() != 0}"> <!-- 파일을 등록했을 경우 -->
 					<c:forEach var="bf" items="${boardfileList}">
-						<a href="/upload/${bf.saveFilename}" download="${bf.saveFilename}"> <!-- 이름 클릭시 다운로드 -->
-							${bf.originFilename}<br>
-						</a>
+						<div>
+							${bf.originFilename}
+							<a href="/upload/${bf.saveFilename}" target="_blank">
+								미리보기
+							</a>
+							<a href="/upload/${bf.saveFilename}" download="${bf.saveFilename}">
+								다운로드
+							</a>
+						</div>
 					</c:forEach>
 				</c:if>
 				<c:if test="${boardfileList.size() == 0}"> <!-- 등록한 파일이 없을 경우 -->
