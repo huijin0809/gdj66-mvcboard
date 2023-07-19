@@ -17,24 +17,24 @@
 			});
 			
 			// 파일 삭제 ajax
-	        $(".delBtn").click(function() {
-	        	let confirmed = confirm("파일을 삭제하시겠습니까?");
+	        $('.delBtn').click(function() {
+	        	let confirmed = confirm('파일을 삭제하시겠습니까?');
 	        	if(confirmed) {
-	        		let fileNo = $(this).data("file-no"); // 클릭한 버튼의 data-file-no 속성 값을 가져온다
-		            console.log("boardfileNo : " + fileNo);
+	        		let fileNo = $(this).data('file-no'); // 클릭한 버튼의 data-file-no 속성 값을 가져온다
+		            console.log('boardfileNo : ' + fileNo);
 	        		
 		            $.ajax({
-		                url: "/removeBoardfile", // 파일 삭제를 처리하는 서버의 URL을 입력합니다.
-		                type: "POST", // 요청 방식을 선택합니다.
-		                data: { boardfileNo : fileNo }, // 삭제할 파일의 정보를 데이터로 전송합니다.
-		                success: function(response) {
-		                	console.log("파일 삭제 성공");
+		                url: '/removeBoardfile', // 파일 삭제를 처리하는 서버의 URL
+		                type: 'post', // 요청 방식을 선택
+		                data: { boardfileNo : fileNo }, // 삭제할 파일의 정보를 데이터로 전송
+		                success: function() {
+		                	console.log('파일 삭제 성공');
 		                	 $(this).closest('div').remove();
-		                     alert("파일이 삭제되었습니다.");
+		                     alert('파일이 삭제되었습니다.');
 		                }.bind(this),
-		                error: function(xhr, status, error) {
-		                	console.error("파일 삭제 실패: " + error);
-		                	alert("파일 삭제에 실패하였습니다.");
+		                error: function(error) {
+		                	console.error('파일 삭제 실패: ' + error);
+		                	alert('파일 삭제에 실패하였습니다.');
 		                }
 		            });
 	        	}

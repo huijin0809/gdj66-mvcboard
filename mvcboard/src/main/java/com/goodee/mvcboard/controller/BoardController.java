@@ -106,12 +106,14 @@ public class BoardController {
 	
 	// 게시글 수정 액션
 	@PostMapping("/board/modifyBoard")
-	public String modifyBoard(Board board) { // Board 객체의 필드 이름에 자동으로 매핑된다
+	public String modifyBoard(Board board, HttpServletRequest request) { // Board 객체의 필드 이름에 자동으로 매핑된다
 		// memberId 처리
 		String memberId = "test";
 		board.setMemberId(memberId);
 		
-		int row = boardService.modifyBoard(board);
+		String path = request.getServletContext().getRealPath("/upload/");
+		
+		int row = boardService.modifyBoard(board, path);
 		log.debug("\u001B[31m"+"modifyBoard row : "+row+"\u001B[0m"); // 콘솔창 출력 색상 지정
 		
 		return "redirect:/board/boardOne?boardNo=" + board.getBoardNo();
