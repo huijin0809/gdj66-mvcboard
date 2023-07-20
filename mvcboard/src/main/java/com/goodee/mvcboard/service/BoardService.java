@@ -127,7 +127,15 @@ public class BoardService {
 	
 	// 게시글 삭제
 	public int removeBoard(Board board) {
-		return boardMapper.deleteBoard(board);
+		// boardfile 테이블의 db 먼저 삭제
+		Boardfile boardfile = new Boardfile();
+		boardfile.setBoardNo(board.getBoardNo()); // boardNo를 넘긴다
+		boardfileMapper.deleteBoardfile(boardfile);
+		
+		// board 테이블 db 삭제
+		int row = boardMapper.deleteBoard(board);
+		
+		return row;
 	}
 	
 	// 게시글 수정

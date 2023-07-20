@@ -36,8 +36,15 @@
 		WHERE boardfile_no = #{boardfileNo}
 	</select>
 	
-	<delete id="deleteBoardfile" parameterType="int" >
+	<delete id="deleteBoardfile" parameterType="com.goodee.mvcboard.vo.Boardfile" >
 		DELETE FROM boardfile
-		WHERE boardfile_no = #{boardfileNo}
+		<where> <!-- 동적 쿼리 작성 -->
+			<if test="boardNo != -1">
+				board_no = #{boardNo}
+			</if>
+			<if test="boardfileNo != -1">
+				boardfile_no = #{boardfileNo}
+			</if>
+		</where>
 	</delete>
 </mapper>

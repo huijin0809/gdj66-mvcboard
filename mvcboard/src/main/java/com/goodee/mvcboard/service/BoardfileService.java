@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.mvcboard.mapper.BoardfileMapper;
+import com.goodee.mvcboard.vo.Boardfile;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,9 @@ public class BoardfileService {
         }
 		
 		// db에서 파일 삭제
-		boardfileMapper.deleteBoardfile(boardfileNo);
+		Boardfile boardfile = new Boardfile();
+		boardfile.setBoardfileNo(boardfileNo);
+		boardfileMapper.deleteBoardfile(boardfile);
 		
 	}
 }

@@ -14,5 +14,5 @@ public interface BoardfileMapper {
 	
 	String selectBoardfileName(int boardfileNo);
 	
-	int deleteBoardfile(int boardfileNo);
+	int deleteBoardfile(Boardfile boardFile); // boardNo 혹은 boardfileNo 중 하나가 넘어오기 때문에 매개값으로 boardfile 객체를 받는다
 }

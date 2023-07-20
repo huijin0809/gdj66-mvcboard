@@ -128,7 +128,6 @@ public class BoardController {
 		model.addAttribute("boardNo", boardNo);
 		
 		return "/board/removeBoard";
-		
 	}
 	
 	// 게시글 삭제 액션
